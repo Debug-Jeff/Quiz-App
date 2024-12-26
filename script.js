@@ -72,19 +72,35 @@ class QuizGame {
         const selectedContainer = selectedChoice.parentElement;
         const selectedAnswer = parseInt(selectedChoice.dataset.number);
         
-        const correct = selectedAnswer === questions[this.currentQuestion].correct;
+        // Get the correct answer container
+        const correctAnswer = questions[this.currentQuestion].correct;
+        const correctContainer = this.choices[correctAnswer].parentElement;
+        
+        const correct = selectedAnswer === correctAnswer;
+        
         if (correct) {
             this.incrementScore();
             selectedContainer.classList.add('correct');
         } else {
             selectedContainer.classList.add('incorrect');
+            correctContainer.classList.add('correct'); // Show correct answer
             this.timeLeft -= 5;
         }
 
+        // Disable all choices after answer is selected
+        this.choices.forEach(choice => {
+            choice.parentElement.style.pointerEvents = 'none';
+        });
+
         setTimeout(() => {
+            // Remove highlighting and re-enable choices
+            this.choices.forEach(choice => {
+                choice.parentElement.classList.remove('correct', 'incorrect');
+                choice.parentElement.style.pointerEvents = 'auto';
+            });
             this.currentQuestion++;
             this.loadQuestion();
-        }, 1000);
+        }, 2000); // Increased delay to 2 seconds to give time to see correct answer
     }
 
     startTimer() {
