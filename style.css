@@ -115,3 +115,34 @@ input[type="text"]:focus {
 .flex-column {
     flex-direction: column;
 }
+
+.correct {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.incorrect {
+    background: #ff4444;
+    color: white;
+}
+
+#highScoresList {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.high-score {
+    padding: 1rem;
+    margin: 0.5rem 0;
+    background: rgba(108, 99, 255, 0.1);
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.score-date {
+    font-size: 0.8rem;
+    color: #666;
+}
