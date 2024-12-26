@@ -1,3 +1,5 @@
+import { questions } from './questions/index.js';
+
 class QuizGame {
     constructor() {
         this.currentQuestion = 0;
@@ -26,10 +28,10 @@ class QuizGame {
     }
 
     bindEvents() {
-        document.getElementById('start-btn').addEventListener('click', () => this.startGame());
+        document.getElementById('start-quiz').addEventListener('click', () => this.startGame());
         document.getElementById('play-again-btn').addEventListener('click', () => this.startGame());
         document.getElementById('go-home-btn').addEventListener('click', () => this.goToHome());
-        document.getElementById('highscores-btn').addEventListener('click', () => {
+        document.getElementById('view-scores').addEventListener('click', () => {
             window.location.assign('highscores.html');
         });
         document.getElementById('pause-btn').addEventListener('click', () => this.pauseGame());
@@ -52,19 +54,20 @@ class QuizGame {
         this.gameScreen.classList.remove('hide');
         this.pauseMenu.classList.add('hide'); // Ensure pause menu is hidden when starting new game
         this.isPaused = false;
+        this.questions = initializeQuiz(); // Initialize questions based on topic and difficulty
         this.loadQuestion();
         this.startTimer();
     }
 
     loadQuestion() {
-        if (this.currentQuestion >= questions.length) {
+        if (this.currentQuestion >= this.questions.length) {
             this.endGame();
             return;
         }
 
-        const question = questions[this.currentQuestion];
+        const question = this.questions[this.currentQuestion];
         this.questionElement.innerText = question.question;
-        this.questionCounterElement.innerText = `${this.currentQuestion + 1}/${questions.length}`;
+        this.questionCounterElement.innerText = `${this.currentQuestion + 1}/${this.questions.length}`;
         
         this.choices.forEach((choice, index) => {
             const choiceContainer = choice.parentElement;
@@ -81,7 +84,7 @@ class QuizGame {
         const selectedAnswer = parseInt(selectedChoice.dataset.number);
         
         // Get the correct answer container
-        const correctAnswer = questions[this.currentQuestion].correct;
+        const correctAnswer = this.questions[this.currentQuestion].correct;
         const correctContainer = this.choices[correctAnswer].parentElement;
         
         const correct = selectedAnswer === correctAnswer;
@@ -205,6 +208,14 @@ class QuizGame {
         localStorage.setItem('highScores', JSON.stringify(highScores));
         window.location.assign('highscores.html');
     }
+}
+
+function initializeQuiz() {
+    const topic = localStorage.getItem('selectedTopic');
+    const difficulty = localStorage.getItem('selectedDifficulty');
+    
+    let questionSet = questions[topic]?.[difficulty] || [];
+    return shuffleArray(questionSet).slice(0, 10); // Get 10 random questions
 }
 
 document.addEventListener('DOMContentLoaded', () => {

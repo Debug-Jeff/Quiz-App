@@ -3,57 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz</title>
+    <title>Quiz App - Game</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="quiz-container">
-        <div class="quiz-header">
-            <h1>Quiz</h1>
-            <div class="quiz-info">
-                <p>Question: <span id="question-counter">1</span>/<span id="question-total">25</span></p>
-                <p>Score: <span id="score">0</span></p>
-                <p>Time: <span id="time-left">27:00</span></p>
+    <div class="quiz-container" id="quiz-container">
+        <div id="game" class="container">
+            <div id="hud" class="hud">
+                <div>Question: <span id="question-counter">1/10</span></div>
+                <div>Score: <span id="score">0</span></div>
+                <div>Time: <span id="time-left">00:00</span></div>
                 <button id="pause-btn" class="btn-small">Pause</button>
             </div>
-        </div>
-
-        <div class="question-container">
-            <h2 id="question">Question text</h2>
-            <div class="choices-container">
-                <div class="choice-container">
-                    <p class="choice-prefix">A</p>
-                    <p class="choice-text" data-number="0"></p>
-                </div>
-                <div class="choice-container">
-                    <p class="choice-prefix">B</p>
-                    <p class="choice-text" data-number="1"></p>
-                </div>
-                <div class="choice-container">
-                    <p class="choice-prefix">C</p>
-                    <p class="choice-text" data-number="2"></p>
-                </div>
-                <div class="choice-container">
-                    <p class="choice-prefix">D</p>
-                    <p class="choice-text" data-number="3"></p>
+            <div id="question-container" class="question-container">
+                <h2 id="question">Question goes here</h2>
+                <div class="choices-container">
+                    <div class="choice-container" data-number="0">
+                        <span class="choice-prefix">A</span>
+                        <p class="choice-text" data-number="0">Choice 1</p>
+                    </div>
+                    <div class="choice-container" data-number="1">
+                        <span class="choice-prefix">B</span>
+                        <p class="choice-text" data-number="1">Choice 2</p>
+                    </div>
+                    <div class="choice-container" data-number="2">
+                        <span class="choice-prefix">C</span>
+                        <p class="choice-text" data-number="2">Choice 3</p>
+                    </div>
+                    <div class="choice-container" data-number="3">
+                        <span class="choice-prefix">D</span>
+                        <p class="choice-text" data-number="3">Choice 4</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div id="pause-menu" class="hide overlay">
+        <div id="pause-menu" class="overlay hide">
             <div class="pause-content">
                 <h2>Game Paused</h2>
-                <button id="resume-btn" class="btn">Resume Quiz</button>
-                <button id="forfeit-btn" class="btn">Forfeit Quiz</button>
+                <button id="resume-btn" class="btn">Resume</button>
+                <button id="forfeit-btn" class="btn">Forfeit</button>
             </div>
         </div>
     </div>
-    <script src="questions/python.js"></script>
-    <script src="questions/htmlcss.js"></script>
-    <script src="questions/go.js"></script>
-    <script src="questions/literature.js"></script>
-    <script src="questions.js"></script>
-    <script src="quiz.js"></script>
+
+    <script type="module" src="questions/index.js"></script>
+    <script type="module" src="quiz.js"></script>
 </body>
 </html>

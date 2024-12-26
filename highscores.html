@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>High Scores - Quiz App</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -12,6 +13,27 @@
         <ul id="highScoresList"></ul>
         <button id="go-home" class="btn">Go Home</button>
     </div>
-    <script src="highscores.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const highScoresList = document.getElementById('highScoresList');
+            const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+            
+            highScoresList.innerHTML = highScores
+                .map(score => `
+                    <li class="high-score ${score.forfeited ? 'forfeited' : ''}">
+                        <div class="score-info">
+                            <span class="player-name">${score.name}</span>
+                            <span class="score">${score.score}</span>
+                        </div>
+                        <span class="score-date">${new Date(score.date).toLocaleDateString()}</span>
+                    </li>
+                `)
+                .join('');
+
+            document.getElementById('go-home').addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
 </body>
 </html>

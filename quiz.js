@@ -1,7 +1,33 @@
+import { questions } from './questions/index.js';
+
 class Quiz {
     constructor() {
-        this.currentPlayer = JSON.parse(localStorage.getItem('currentPlayer'));
-        this.questions = [];
+        console.log('Quiz initializing...');
+        this.initializeQuiz();
+    }
+
+    initializeQuiz() {
+        const currentPlayer = JSON.parse(localStorage.getItem('currentPlayer'));
+        console.log('Current player:', currentPlayer);
+
+        if (!currentPlayer) {
+            console.log('No player data found, redirecting...');
+            window.location.replace('index.html');
+            return;
+        }
+
+        document.getElementById('quiz-container').setAttribute('data-topic', currentPlayer.topic);
+
+        const topic = currentPlayer.topic;
+        const difficulty = currentPlayer.difficulty;
+        this.questions = this.getQuestions(topic, difficulty);
+        
+        if (!this.questions || this.questions.length === 0) {
+            alert('Error loading questions');
+            window.location.href = 'index.html';
+            return;
+        }
+
         this.currentQuestion = 0;
         this.score = 0;
         this.timeLeft = 1620;
@@ -9,29 +35,22 @@ class Quiz {
         this.isPaused = false;
         this.loadElements();
         this.bindEvents();
-        this.loadQuestions();
+        this.startQuiz();
     }
 
-    loadQuestions() {
-        // Map topic selection to question files
-        const topicMap = {
-            'javascript': questions, // From questions.js (original JavaScript questions)
-            'python': pythonQuestions,
-            'htmlcss': htmlcssQuestions,
-            'go': goQuestions,
-            'literature': literatureQuestions
-        };
+    getQuestions(topic, difficulty) {
+        const topicQuestions = questions[topic]?.[difficulty];
+        if (!topicQuestions) return null;
+        
+        return this.shuffleArray(topicQuestions).slice(0, 10);
+    }
 
-        const selectedTopic = this.currentPlayer.topic;
-        this.questions = topicMap[selectedTopic] || [];
-
-        if (this.questions.length === 0) {
-            alert('Error loading questions. Returning to home page.');
-            window.location.assign('index.html');
-            return;
+    shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
-
-        this.startQuiz();
+        return array;
     }
 
     loadElements() {
@@ -59,7 +78,7 @@ class Quiz {
     startQuiz() {
         this.loadQuestion();
         this.startTimer();
-        this.updateTimerDisplay(); // Show initial time
+        this.updateTimerDisplay();
     }
 
     loadQuestion() {
@@ -70,13 +89,11 @@ class Quiz {
 
         const question = this.questions[this.currentQuestion];
         this.questionElement.textContent = question.question;
-        this.questionCounterElement.textContent = `${this.currentQuestion + 1}`;
+        this.questionCounterElement.textContent = `${this.currentQuestion + 1}/10`;
         
         this.choicesContainer.forEach((container, index) => {
             const choiceText = container.querySelector('.choice-text');
             choiceText.textContent = question.choices[index];
-            
-            // Reset any previous styling
             container.classList.remove('correct', 'incorrect');
             container.style.pointerEvents = 'auto';
         });
@@ -88,7 +105,6 @@ class Quiz {
         const selectedContainer = e.target.closest('.choice-container');
         if (!selectedContainer) return;
 
-        // Disable all choices
         this.choicesContainer.forEach(choice => {
             choice.style.pointerEvents = 'none';
         });
@@ -103,13 +119,11 @@ class Quiz {
             this.scoreElement.textContent = this.score;
         } else {
             selectedContainer.classList.add('incorrect');
-            // Show correct answer
             const correctContainer = Array.from(this.choicesContainer)[this.questions[this.currentQuestion].correct];
             correctContainer.classList.add('correct');
             this.timeLeft -= 5;
         }
 
-        // Move to next question after delay
         setTimeout(() => {
             this.currentQuestion++;
             if (this.currentQuestion < this.questions.length) {
@@ -123,7 +137,7 @@ class Quiz {
     startTimer() {
         if (this.timer) clearInterval(this.timer);
         
-        this.updateTimerDisplay(); // Show initial time
+        this.updateTimerDisplay();
         this.timer = setInterval(() => {
             if (!this.isPaused) {
                 this.timeLeft--;
@@ -146,8 +160,6 @@ class Quiz {
         this.isPaused = true;
         clearInterval(this.timer);
         this.pauseMenu.classList.remove('hide');
-        
-        // Disable choice containers while paused
         this.choicesContainer.forEach(choice => {
             choice.style.pointerEvents = 'none';
         });
@@ -157,8 +169,6 @@ class Quiz {
         this.isPaused = false;
         this.pauseMenu.classList.add('hide');
         this.startTimer();
-        
-        // Re-enable choice containers
         this.choicesContainer.forEach(choice => {
             choice.style.pointerEvents = 'auto';
         });
@@ -166,21 +176,18 @@ class Quiz {
 
     forfeitQuiz() {
         if (confirm('Are you sure you want to forfeit? Your progress will be lost.')) {
-            // Save forfeit info to high scores
             const currentPlayer = JSON.parse(localStorage.getItem('currentPlayer')) || {};
             const forfeitScore = {
                 name: currentPlayer.name,
-                forfeited: true, // Add flag for forfeited games
+                forfeited: true,
                 score: 'FORFEITED',
                 date: new Date().toISOString()
             };
 
-            // Add to high scores
             const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
             highScores.push(forfeitScore);
             localStorage.setItem('highScores', JSON.stringify(highScores));
 
-            // Update last player info
             const lastPlayer = {
                 name: currentPlayer.name,
                 score: 'FORFEITED',
@@ -189,7 +196,6 @@ class Quiz {
             };
             localStorage.setItem('lastPlayer', JSON.stringify(lastPlayer));
             
-            // Redirect to home
             window.location.assign('index.html');
         } else {
             this.resumeQuiz();
@@ -198,7 +204,6 @@ class Quiz {
 
     endQuiz() {
         clearInterval(this.timer);
-        // Save score and attempt info
         const currentPlayer = JSON.parse(localStorage.getItem('currentPlayer')) || {};
         const finalScore = {
             name: currentPlayer.name,
@@ -206,14 +211,12 @@ class Quiz {
             date: new Date().toISOString()
         };
 
-        // Save to high scores
         const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
         highScores.push(finalScore);
         highScores.sort((a, b) => b.score - a.score);
-        highScores.splice(5); // Keep only top 5 scores
+        highScores.splice(5);
         localStorage.setItem('highScores', JSON.stringify(highScores));
 
-        // Update last player info
         const lastPlayer = {
             name: currentPlayer.name,
             score: this.score,
@@ -222,13 +225,11 @@ class Quiz {
         };
         localStorage.setItem('lastPlayer', JSON.stringify(lastPlayer));
 
-        // Redirect to high scores page
         window.location.href = 'highscores.html';
     }
-
-    // ... rest of the methods from original QuizGame class ...
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, starting quiz...');
     new Quiz();
 });

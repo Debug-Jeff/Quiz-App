@@ -3,6 +3,12 @@
     --secondary-color: #4CAF50;
     --text-color: #2c3e50;
     --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    /* Topic-specific colors */
+    --javascript-color: #6c63ff;
+    --python-color: #4CAF50;
+    --htmlcss-color: #e44d26;
+    --go-color: #00ADD8;
+    --literature-color: #8B4513;
 }
 
 * {
@@ -144,6 +150,25 @@ input[type="text"]:focus {
 }
 
 .topic-select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+}
+
+/* Update difficulty select styling to match other inputs */
+.difficulty-select {
+    width: 100%;
+    padding: 1rem;
+    margin: 1rem 0;
+    border: 2px solid #ddd;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+    cursor: pointer;
+}
+
+.difficulty-select:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
@@ -352,4 +377,25 @@ input[type="text"]:focus {
     display: flex;
     gap: 2rem;
     align-items: center;
+}
+
+/* Topic-specific styling */
+[data-topic="javascript"] {
+    --primary-color: var(--javascript-color);
+}
+
+[data-topic="python"] {
+    --primary-color: var(--python-color);
+}
+
+[data-topic="htmlcss"] {
+    --primary-color: var(--htmlcss-color);
+}
+
+[data-topic="go"] {
+    --primary-color: var(--go-color);
+}
+
+[data-topic="literature"] {
+    --primary-color: var(--literature-color);
 }

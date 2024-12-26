@@ -1,45 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quiz App</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="home-container">
-        <div class="content-wrapper">
-            <h1 class="main-title">Quiz App</h1>
-            
-            <div class="last-player-info">
-                <h2>Last Player</h2>
-                <div id="last-player-stats">
-                    <p>Name: <span id="last-player-name">None</span></p>
-                    <p>Score: <span id="last-player-score">0</span></p>
-                    <p>Attempts: <span id="last-player-attempts">0</span></p>
-                </div>
-            </div>
+      <div class="content-wrapper">
+        <h1 class="main-title">Quiz App</h1>
 
-            <div class="start-section">
-                <input type="text" id="player-name" placeholder="Enter your name to start" required>
-                <select id="topic-select" class="topic-select" required>
-                    <option value="">Select a Topic</option>
-                    <option value="javascript">JavaScript</option>
-                    <option value="python">Python</option>
-                    <option value="htmlcss">HTML/CSS</option>
-                    <option value="go">GO</option>
-                    <option value="literature">Literature</option>
-                </select>
-                <button id="start-quiz" class="btn" disabled>Start Quiz</button>
-                <button id="view-scores" class="btn">High Scores</button>
-            </div>
+        <div class="last-player-info">
+          <h2>Last Player</h2>
+          <div id="last-player-stats">
+            <p>Name: <span id="last-player-name">None</span></p>
+            <p>Score: <span id="last-player-score">0</span></p>
+            <p>Attempts: <span id="last-player-attempts">0</span></p>
+          </div>
         </div>
+
+        <div class="start-section">
+          <input
+            type="text"
+            id="player-name"
+            placeholder="Enter your name to start"
+            required
+          />
+          <select id="topic-select" class="topic-select" required>
+            <option value="">Select a Topic</option>
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="htmlcss">HTML/CSS</option>
+            <option value="go">GO</option>
+            <option value="literature">Literature</option>
+          </select>
+          <select id="difficulty-select" class="difficulty-select" required>
+            <option value="">Select Difficulty</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+          <button id="start-quiz" class="btn" disabled>Start Quiz</button>
+          <button id="view-scores" class="btn">View High Scores</button>
+        </div>
+      </div>
     </div>
-    <script src="home.js"></script>
-    <script src="questions.js"></script>
-    <script src="script.js"></script>
-</body>
+    <script type="module" src="home.js"></script>
+  </body>
 </html>
