@@ -2,7 +2,7 @@ class QuizGame {
     constructor() {
         this.currentQuestion = 0;
         this.score = 0;
-        this.timeLeft = 30;
+        this.timeLeft = 1620; // 90 seconds per question (18 questions * 90 seconds)
         this.timer = null;
         this.initializeElements();
         this.bindEvents();
@@ -88,17 +88,23 @@ class QuizGame {
     }
 
     startTimer() {
-        this.timeLeft = 30;
-        this.timerElement.innerText = this.timeLeft;
+        this.timeLeft = 1620; // 27 minutes total
+        this.updateTimerDisplay();
         
         this.timer = setInterval(() => {
             this.timeLeft--;
-            this.timerElement.innerText = this.timeLeft;
+            this.updateTimerDisplay();
             
             if (this.timeLeft <= 0) {
                 this.endGame();
             }
         }, 1000);
+    }
+
+    updateTimerDisplay() {
+        const minutes = Math.floor(this.timeLeft / 60);
+        const seconds = this.timeLeft % 60;
+        this.timerElement.innerText = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     }
 
     incrementScore() {
