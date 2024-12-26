@@ -4,8 +4,10 @@ class QuizGame {
         this.score = 0;
         this.timeLeft = 1620; // 90 seconds per question (18 questions * 90 seconds)
         this.timer = null;
+        this.isPaused = false;
         this.initializeElements();
         this.bindEvents();
+        this.pauseMenu.classList.add('hide'); // Ensure pause menu is hidden on start
     }
 
     initializeElements() {
@@ -20,6 +22,7 @@ class QuizGame {
         this.choices = Array.from(document.getElementsByClassName('choice-text'));
         this.username = document.getElementById('username');
         this.saveScoreBtn = document.getElementById('save-score-btn');
+        this.pauseMenu = document.getElementById('pause-menu');
     }
 
     bindEvents() {
@@ -29,6 +32,9 @@ class QuizGame {
         document.getElementById('highscores-btn').addEventListener('click', () => {
             window.location.assign('highscores.html');
         });
+        document.getElementById('pause-btn').addEventListener('click', () => this.pauseGame());
+        document.getElementById('resume-btn').addEventListener('click', () => this.resumeGame());
+        document.getElementById('forfeit-btn').addEventListener('click', () => this.forfeitGame());
         this.choices.forEach(choice => {
             choice.addEventListener('click', (e) => this.checkAnswer(e));
         });
@@ -44,6 +50,8 @@ class QuizGame {
         this.homeScreen.classList.add('hide');
         this.endScreen.classList.add('hide');
         this.gameScreen.classList.remove('hide');
+        this.pauseMenu.classList.add('hide'); // Ensure pause menu is hidden when starting new game
+        this.isPaused = false;
         this.loadQuestion();
         this.startTimer();
     }
@@ -104,15 +112,16 @@ class QuizGame {
     }
 
     startTimer() {
-        this.timeLeft = 1620; // 27 minutes total
-        this.updateTimerDisplay();
+        if (this.timer) clearInterval(this.timer);
         
         this.timer = setInterval(() => {
-            this.timeLeft--;
-            this.updateTimerDisplay();
-            
-            if (this.timeLeft <= 0) {
-                this.endGame();
+            if (!this.isPaused) {
+                this.timeLeft--;
+                this.updateTimerDisplay();
+                
+                if (this.timeLeft <= 0) {
+                    this.endGame();
+                }
             }
         }, 1000);
     }
@@ -136,8 +145,47 @@ class QuizGame {
     }
 
     goToHome() {
+        clearInterval(this.timer);
         this.homeScreen.classList.remove('hide');
+        this.gameScreen.classList.add('hide');
         this.endScreen.classList.add('hide');
+        this.pauseMenu.classList.add('hide');
+    }
+
+    pauseGame() {
+        this.isPaused = true;
+        clearInterval(this.timer);
+        this.pauseMenu.classList.remove('hide');
+    }
+
+    resumeGame() {
+        this.isPaused = false;
+        this.pauseMenu.classList.add('hide');
+        this.startTimer();
+    }
+
+    forfeitGame() {
+        if (confirm('Are you sure you want to forfeit? Your progress will be lost.')) {
+            // Reset everything and return to home screen
+            this.score = 0;
+            this.currentQuestion = 0;
+            this.timeLeft = 1620;
+            this.isPaused = false;
+            
+            // Clear all intervals and hide all screens except home
+            clearInterval(this.timer);
+            this.pauseMenu.classList.add('hide');
+            this.gameScreen.classList.add('hide');
+            this.endScreen.classList.add('hide');
+            this.homeScreen.classList.remove('hide');
+            
+            // Reset the score display
+            this.scoreElement.innerText = '0';
+            this.updateTimerDisplay();
+        } else {
+            // If user cancels forfeit, resume the game
+            this.resumeGame();
+        }
     }
 
     saveHighScore(e) {

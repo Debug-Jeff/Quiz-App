@@ -178,5 +178,75 @@ const questions = [
             "Formats JSON data"
         ],
         correct: 0
+    },
+    {
+        question: "What is the purpose of the 'use strict' directive in JavaScript?",
+        choices: [
+            "Enforces stricter parsing and error handling",
+            "Makes the code run faster",
+            "Allows use of deprecated features",
+            "Enables new JavaScript features"
+        ],
+        correct: 0
+    },
+    {
+        question: "What is a Promise in JavaScript?",
+        choices: [
+            "A way to handle asynchronous operations",
+            "A guarantee of code execution",
+            "A type of function",
+            "A data storage method"
+        ],
+        correct: 0
+    },
+    {
+        question: "Which method is used to schedule a function to run after a delay?",
+        choices: [
+            "delay()",
+            "wait()",
+            "setTimeout()",
+            "schedule()"
+        ],
+        correct: 2
+    },
+    {
+        question: "What does the 'map' method do in JavaScript?",
+        choices: [
+            "Creates a new array with results of a function",
+            "Modifies the original array",
+            "Sorts the array elements",
+            "Filters out array elements"
+        ],
+        correct: 0
+    },
+    {
+        question: "What is the purpose of the 'this' keyword in JavaScript?",
+        choices: [
+            "References the current object",
+            "Creates a new object",
+            "Defines a function",
+            "Declares a variable"
+        ],
+        correct: 0
+    },
+    {
+        question: "What is a closure in JavaScript?",
+        choices: [
+            "A function with access to outer variables",
+            "A way to close a program",
+            "A method to end a loop",
+            "A type of array"
+        ],
+        correct: 0
+    },
+    {
+        question: "Which operator is used for string concatenation in JavaScript?",
+        choices: [
+            "+",
+            "&",
+            "|",
+            ","
+        ],
+        correct: 0
     }
 ];
