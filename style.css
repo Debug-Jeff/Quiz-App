@@ -23,7 +23,7 @@ body {
     max-width: 800px;
     margin: 2rem auto;
     padding: 2rem;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(6, 230, 251, 0.95);
     border-radius: 1rem;
     box-shadow: 0 8px 30px rgba(0,0,0,0.1);
 }
@@ -48,6 +48,8 @@ body {
 }
 
 .choice-container {
+    display: flex;
+    width: 100%;
     background: white;
     border: 2px solid var(--primary-color);
     border-radius: 0.5rem;
@@ -55,6 +57,11 @@ body {
     margin: 1rem 0;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+.choice-text {
+    width: 100%;
+    padding: 0.5rem;
 }
 
 .choice-container:hover {
@@ -117,12 +124,12 @@ input[type="text"]:focus {
 }
 
 .correct {
-    background: var(--secondary-color);
+    background: var(--secondary-color) !important;
     color: white;
 }
 
 .incorrect {
-    background: #ff4444;
+    background: #ff4444 !important;
     color: white;
 }
 

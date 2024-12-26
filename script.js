@@ -17,7 +17,7 @@ class QuizGame {
         this.timerElement = document.getElementById('time-left');
         this.finalScoreElement = document.getElementById('final-score');
         this.questionCounterElement = document.getElementById('question-counter');
-        this.choices = Array.from(document.getElementsByClassName('choice-container'));
+        this.choices = Array.from(document.getElementsByClassName('choice-text'));
         this.username = document.getElementById('username');
         this.saveScoreBtn = document.getElementById('save-score-btn');
     }
@@ -26,6 +26,9 @@ class QuizGame {
         document.getElementById('start-btn').addEventListener('click', () => this.startGame());
         document.getElementById('play-again-btn').addEventListener('click', () => this.startGame());
         document.getElementById('go-home-btn').addEventListener('click', () => this.goToHome());
+        document.getElementById('highscores-btn').addEventListener('click', () => {
+            window.location.assign('highscores.html');
+        });
         this.choices.forEach(choice => {
             choice.addEventListener('click', (e) => this.checkAnswer(e));
         });
@@ -56,25 +59,29 @@ class QuizGame {
         this.questionCounterElement.innerText = `${this.currentQuestion + 1}/${questions.length}`;
         
         this.choices.forEach((choice, index) => {
+            const choiceContainer = choice.parentElement;
             choice.innerText = question.choices[index];
+            choiceContainer.classList.remove('correct', 'incorrect');
         });
     }
 
     checkAnswer(e) {
-        const selectedChoice = e.target;
-        const selectedAnswer = Array.from(this.choices).indexOf(selectedChoice);
+        if (!e.target.matches('.choice-text') && !e.target.matches('.choice-container')) return;
+        
+        const selectedChoice = e.target.matches('.choice-text') ? e.target : e.target.querySelector('.choice-text');
+        const selectedContainer = selectedChoice.parentElement;
+        const selectedAnswer = parseInt(selectedChoice.dataset.number);
         
         const correct = selectedAnswer === questions[this.currentQuestion].correct;
         if (correct) {
             this.incrementScore();
-            selectedChoice.classList.add('correct');
+            selectedContainer.classList.add('correct');
         } else {
-            selectedChoice.classList.add('incorrect');
-            this.timeLeft -= 5; // Penalty for wrong answer
+            selectedContainer.classList.add('incorrect');
+            this.timeLeft -= 5;
         }
 
         setTimeout(() => {
-            selectedChoice.classList.remove('correct', 'incorrect');
             this.currentQuestion++;
             this.loadQuestion();
         }, 1000);
@@ -130,4 +137,6 @@ class QuizGame {
     }
 }
 
-new QuizGame();
+document.addEventListener('DOMContentLoaded', () => {
+    new QuizGame();
+});
