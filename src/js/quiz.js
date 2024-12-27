@@ -1,4 +1,4 @@
-import { questions } from './questions/index.js';
+import { questions } from '../questions/index.js';
 
 class Quiz {
     constructor() {
