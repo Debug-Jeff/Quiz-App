@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('last-player-score').textContent = lastPlayer.score || '0';
     document.getElementById('last-player-attempts').textContent = lastPlayer.attempts || '0';
 
-    // Enable/disable start button based on name input and topic selection
     function validateInputs() {
         const topic = topicSelect.value;
         const difficulty = difficultySelect.value;
