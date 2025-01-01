@@ -22,22 +22,3 @@ quiz-app/
 └── README.md      # Documentation
 ```
 
-## Setup
-
-1. Clone the repository
-2. Open `public/index.html` in your browser
-3. Start playing!
-
-## Development
-
-- Use modern ES6+ JavaScript
-- Follow responsive design principles
-- Maintain question bank in `src/questions/index.js`
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
